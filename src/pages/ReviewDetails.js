@@ -13,6 +13,13 @@ const REVIEW = gql`
                     name
                     body
                     rating
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
                     categories {
                         data {
                             id
@@ -29,6 +36,7 @@ const REVIEW = gql`
 
 export default function ReviewDetails() {
     const { id } = useParams();
+    const baseUrl = "http://localhost:1337";
     const { loading, error, data } = useQuery(REVIEW, {
         variables: {
             id: id,
@@ -36,6 +44,8 @@ export default function ReviewDetails() {
     });
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
+
+    console.log(data.review.data.attributes.image.data.attributes.url);
 
     return (
         <div className="review-card">
@@ -47,6 +57,11 @@ export default function ReviewDetails() {
             ))}
 
             <ReactMarkdown>{data.review.data.attributes.body}</ReactMarkdown>
+
+            <img
+                src={`${baseUrl}${data.review.data.attributes.image.data.attributes.url}`}
+                alt="review"
+            />
         </div>
     );
 }
