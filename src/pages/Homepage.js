@@ -1,33 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
+import { ReviewsContext } from "../store/ReviewsContext";
 
-const REVIEWS = gql`
-    query GetReviews {
-        reviews {
-            data {
-                id
-                attributes {
-                    name
-                    body
-                    rating
-                    categories {
-                        data {
-                            id
-                            attributes {
-                                name
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-`;
+// const REVIEWS = gql`
+//     query GetReviews {
+//         reviews {
+//             data {
+//                 id
+//                 attributes {
+//                     name
+//                     body
+//                     rating
+//                     categories {
+//                         data {
+//                             id
+//                             attributes {
+//                                 name
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// `;
 
 export default function Homepage() {
-    const { loading, error, data } = useQuery(REVIEWS);
+    // const { loading, error, data } = useQuery(REVIEWS);
+    const { loading, error, data } = useContext(ReviewsContext);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;

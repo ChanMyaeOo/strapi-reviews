@@ -4,6 +4,32 @@ import useFetch from "../hooks/useFetch";
 import { useQuery, gql } from "@apollo/client";
 import ReactMarkdown from "react-markdown";
 
+// review without image query
+const REVIEW = gql`
+    query GetReview($id: ID!) {
+        review(id: $id) {
+            data {
+                id
+                attributes {
+                    name
+                    body
+                    rating
+                    categories {
+                        data {
+                            id
+                            attributes {
+                                name
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+// review with image query
+/*
 const REVIEW = gql`
     query GetReview($id: ID!) {
         review(id: $id) {
@@ -33,6 +59,7 @@ const REVIEW = gql`
         }
     }
 `;
+*/
 
 export default function ReviewDetails() {
     const { id } = useParams();
@@ -45,8 +72,6 @@ export default function ReviewDetails() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
-    console.log(data.review.data.attributes.image.data.attributes.url);
-
     return (
         <div className="review-card">
             <div className="rating">{data.review.data.attributes.rating}</div>
@@ -58,10 +83,10 @@ export default function ReviewDetails() {
 
             <ReactMarkdown>{data.review.data.attributes.body}</ReactMarkdown>
 
-            <img
+            {/* <img
                 src={`${baseUrl}${data.review.data.attributes.image.data.attributes.url}`}
                 alt="review"
-            />
+            /> */}
         </div>
     );
 }
