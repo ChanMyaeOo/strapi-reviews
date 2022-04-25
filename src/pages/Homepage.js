@@ -29,10 +29,20 @@ import { ReviewsContext } from "../store/ReviewsContext";
 
 export default function Homepage() {
     // const { loading, error, data } = useQuery(REVIEWS);
-    const { loading, error, data } = useContext(ReviewsContext);
+    const {
+        loading,
+        error,
+        data,
+        getNextPage,
+        getPrevPage,
+        page,
+        paginationResult,
+    } = useContext(ReviewsContext);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
+
+    // console.log(paginationResult);
 
     return (
         <div>
@@ -49,6 +59,17 @@ export default function Homepage() {
                     <Link to={`/details/${review.id}`}>Read more</Link>
                 </div>
             ))}
+
+            {!paginationResult && <div>No post available! Please go back.</div>}
+
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <button disabled={!page} onClick={getPrevPage}>
+                    PREV
+                </button>
+                <button disabled={!paginationResult} onClick={getNextPage}>
+                    NEXT
+                </button>
+            </div>
         </div>
     );
 }
